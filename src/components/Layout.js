@@ -34,7 +34,6 @@ export default class Layout extends Component {
 	}
 
 	/*
-	* 	Sets the user property in state 
 	*	@param user {id:number, name:string}
 	*/	
 	setUser = (user)=>{

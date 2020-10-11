@@ -5,50 +5,6 @@ import ChatHeading from './ChatHeading'
 import Messages from '../messages/Messages'
 import MessageInput from '../messages/MessageInput'
 
-const ChatUser = 
- [
-	{
-	  "id": "7d8472ca-7e24-436d-ad88-7290514bc591",
-	  "name": "Arjunan&Raj",
-	  "messages": [],
-	  "users": [
-		"Arjunan",
-		"Raj"
-	  ],
-	  "typingUsers": []
-	},
-	{
-	  "id": "2b2b79a6-cf46-4def-b69c-d32fb95fb556",
-	  "name": "Karthika&Raj",
-	  "messages": [],
-	  "users": [
-		"Karthika",
-		"Raj"
-	  ],
-	  "typingUsers": []
-	},
-	{
-	  "id": "66c21cc8-8d48-4ca3-b340-a502f3759192",
-	  "name": "Gayathri&Raj",
-	  "messages": [],
-	  "users": [
-		"Gayathri",
-		"Raj"
-	  ],
-	  "typingUsers": []
-	},
-	{
-	  "id": "4bd3e51f-aa6c-4084-b362-e6a8e9002802",
-	  "name": "Indian&Raj",
-	  "messages": [],
-	  "users": [
-		"Indian",
-		"Raj"
-	  ],
-	  "typingUsers": []
-	}
-  ]
-
 export default class ChatContainer extends Component {
 	constructor(props) {
 	  super(props);	

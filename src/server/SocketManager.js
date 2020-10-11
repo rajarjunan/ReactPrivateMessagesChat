@@ -12,11 +12,8 @@ let communityChat = createChat()
 
 module.exports = function(socket){
 					
-	// console.log('\x1bc'); //clears console
 	console.log("Socket Id:" + socket.id);
-
 	let sendMessageToChatFromUser;
-
 	let sendTypingFromUser;
 
 	//Verify Username
@@ -51,7 +48,6 @@ module.exports = function(socket){
 			console.log("Disconnect", connectedUsers);
 		}
 	})
-
 
 	//User logsout
 	socket.on(LOGOUT, ()=>{
