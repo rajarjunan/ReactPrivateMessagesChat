@@ -145,6 +145,11 @@ export default class ChatContainer extends Component {
 
 	}
 
+	onCloseChatBox = (index) => {
+		let { multiActiveChat } = this.state;
+		multiActiveChat.splice(index, 1);
+		this.setState(() => { multiActiveChat });
+	}
 
 
 	render() {
@@ -162,22 +167,13 @@ export default class ChatContainer extends Component {
 					<h1>Hello World</h1>
 					<h1>Hello World</h1>
 					<h1>Hello World</h1>
-					<h1>Hello World</h1>
-					<h1>Hello World</h1>
-					<h1>Hello World</h1>
-					<h1>Hello World</h1>
-					<h1>Hello World</h1>
-					<h1>Hello World</h1>
-					<h1>Hello World</h1>
-					<h1>Hello World</h1>
-					<h1>Hello World</h1>
-					<h1>Hello World</h1>
+					
 					{
 						<div className="chat-box-container">
 							{(multiActiveChat || []).map((val, index) =>
 
 								<div key={index} className="chat-room">
-									<ChatHeading name={val.name} />
+									<ChatHeading name={val.name} onCloseChatBox={() =>this.onCloseChatBox(index)} />
 									<Messages
 										messages={val.messages}
 										user={user}

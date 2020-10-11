@@ -1,9 +1,9 @@
 import React from 'react';
-import FAVideo from 'react-icons/lib/fa/video-camera'
+import FAClose from 'react-icons/lib/fa/close'
 import FAUserPlus from 'react-icons/lib/fa/user-plus'
 import MdEllipsisMenu from 'react-icons/lib/md/keyboard-control'
 
-export default function({name, numberOfUsers}) {
+export default function({name, numberOfUsers, onCloseChatBox}) {
 	
 	return (
 		<div className="chat-header">
@@ -15,9 +15,8 @@ export default function({name, numberOfUsers}) {
 				</div>
 			</div>
 			<div className="options">
-				<FAVideo />
-				<FAUserPlus />
-				<MdEllipsisMenu />
+				<span onClick={onCloseChatBox}><FAClose /></span>
+				
 			</div>
 		</div>
 	);
