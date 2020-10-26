@@ -14,10 +14,16 @@ export default class SideBar extends Component {
 	handleSubmit = (e) => {
 		e.preventDefault()
 		const { reciever } = this.state
+		console.log(":::::reciever", reciever)
 		const { onSendPrivateMessage } = this.props
 
 		onSendPrivateMessage(reciever)
 	}
+
+	// searchChatUser = (e) => { 
+		
+	// 	this.setState({ reciever: e.target.value }) 
+	// }
 
 	render() {
 		const { chats, activeChat, user, setActiveChat, logout } = this.props
@@ -30,15 +36,15 @@ export default class SideBar extends Component {
 						<FAMenu />
 					</div>
 				</div>
-				<form onSubmit={this.handleSubmit} className="search">
+				{/* <form onSubmit={this.handleSubmit} className="search">
 					<i className="search-icon"><FASearch /></i>
 					<input
 						placeholder="Search"
 						type="text"
 						value={reciever}
-						onChange={(e) => { this.setState({ reciever: e.target.value }) }} />
+						onChange={(e) => this.searchChatUser(e)} />
 					<div className="plus"></div>
-				</form>
+				</form> */}
 				<div
 					className="users"
 					ref='users'
@@ -56,6 +62,8 @@ export default class SideBar extends Component {
 								const classNames = (activeChat && activeChat.id === chat.id) ? 'active' : ''
 
 								return (
+									<div>
+									{(chatSideName != "Group Chat")  &&
 									<div
 										key={chat.id}
 										className={`user ${classNames}`}
@@ -68,8 +76,12 @@ export default class SideBar extends Component {
 										</div>
 
 									</div>
+									}
+									</div>
 								)
 							}
+							
+							
 
 							return null
 						})

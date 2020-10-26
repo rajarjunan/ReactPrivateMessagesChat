@@ -37,8 +37,11 @@ export default class Layout extends Component {
 	*	@param user {id:number, name:string}
 	*/	
 	setUser = (user)=>{
+		// console.log(":::::::::::11:", user);
 		const { socket } = this.state
 		socket.emit(USER_CONNECTED, user);
+		
+		socket.emit("NEW USER", user)
 		this.setState({user})
 	}
 

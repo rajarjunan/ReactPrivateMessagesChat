@@ -25,6 +25,11 @@ module.exports = function(socket){
 		}
 	})
 
+	socket.on("NEW USER",(user) => {
+		// console.log(":::::::::::11:", user);
+		io.emit("NEW USER", user);
+	})
+
 	//User Connects with username
 	socket.on(USER_CONNECTED, (user)=>{
 		user.socketId = socket.id
@@ -35,7 +40,7 @@ module.exports = function(socket){
 		sendTypingFromUser = sendTypingToChat(user.name)
 
 		io.emit(USER_CONNECTED, connectedUsers)
-		console.log(connectedUsers);
+		console.log(":::::::::::::::USER_CONNECTED::::::::",connectedUsers);
 
 	})
 	

@@ -17,7 +17,7 @@ export default class ChatContainer extends Component {
 			comment: '',
 			postArray: [],
 			postImage: [],
-			postType:''
+			postType: ''
 
 		};
 	}
@@ -29,14 +29,26 @@ export default class ChatContainer extends Component {
 
 	initSocket(socket) {
 		socket.emit(COMMUNITY_CHAT, this.resetChat)
+		// this.sendOpenPrivateMessage()
 		socket.on(PRIVATE_MESSAGE, this.addChat)
 		socket.on('connect', () => {
 			socket.emit(COMMUNITY_CHAT, this.resetChat)
 		})
+
+		const { user } = this.props;
+		socket.on("NEW USER", newUser => {
+			if(newUser.name !== user.name) {
+				this.sendOpenPrivateMessage(newUser.name)
+			}
+		  });
+
 	}
 
 	sendOpenPrivateMessage = (reciever) => {
 		const { socket, user } = this.props
+		socket.on("USER_CONNECTED", users => {
+			console.log('connected_user:::', users);
+		  });
 		socket.emit(PRIVATE_MESSAGE, { reciever, sender: user.name })
 	}
 
@@ -57,6 +69,7 @@ export default class ChatContainer extends Component {
 	*	@param reset {boolean} if true will set the chat as the only chat.
 	*/
 	addChat = (chat, reset = false) => {
+		console.log(":::::addChat", chat);
 		const { socket } = this.props
 		const { chats } = this.state
 
@@ -157,19 +170,19 @@ export default class ChatContainer extends Component {
 	}
 
 	onChangePost = (event) => {
-		const {target: {value}} = event;
-		this.setState({comment: value })
+		const { target: { value } } = event;
+		this.setState({ comment: value })
 	}
 
-	 getTime = (date)=>{
-		return `${date.getHours()}:${("0"+date.getMinutes()).slice(-2)}`
+	getTime = (date) => {
+		return `${date.getHours()}:${("0" + date.getMinutes()).slice(-2)}`
 		// return date;
 	}
 	onSubmitPost = () => {
 		let { comment, postArray } = this.state;
-		let {user} = this.props;
+		let { user } = this.props;
 
-		if(comment !== "") {
+		if (comment !== "") {
 			let payload = {
 				id: '_' + Math.random().toString(36).substr(2, 9),
 				message: comment,
@@ -177,23 +190,23 @@ export default class ChatContainer extends Component {
 				subMessage: [],
 				user,
 				time: this.getTime(new Date(Date.now())),
-				
+
 			}
 			let newArray = postArray.push(payload)
-			this.setState(() => {postArray: newArray });
-			this.setState({comment: ''});
-			console.log("::::::::postArray", this.state.postArray);
+			this.setState(() => { postArray: newArray });
+			this.setState({ comment: '' });
+			// console.log("::::::::postArray", this.state.postArray);
 
 		}
-		
+
 	}
 
 	getFiles = (file) => {
-		console.log("::::::::::::::file", file);
+		// console.log("::::::::::::::file", file);
 		let { postArray } = this.state;
-		let {user} = this.props;
+		let { user } = this.props;
 
-		if(file[0].base64) {
+		if (file[0].base64) {
 			let payload = {
 				id: '_' + Math.random().toString(36).substr(2, 9),
 				message: (file[0].base64).replace(/"/g, "'"),
@@ -201,48 +214,46 @@ export default class ChatContainer extends Component {
 				subMessage: [],
 				user,
 				time: this.getTime(new Date(Date.now())),
-				
+
 			}
 			let newArray = postArray.push(payload)
-			this.setState(() => {postArray: newArray });
-			console.log("::::::::postArray", this.state.postArray);
+			this.setState(() => { postArray: newArray });
+			// console.log("::::::::postArray", this.state.postArray);
 
 		}
 	}
 
 	render() {
 		const { user, logout } = this.props
-		console.log("::::::::::::user", user);
+		// console.log("::::::::::::user", user);
 		const { chats, activeChat, multiActiveChat = [], postArray } = this.state
-		console.log("::::re:::", JSON.stringify(multiActiveChat));
+		// console.log("::::re:::", JSON.stringify(multiActiveChat));
 		return (
 			<div className="container">
 
 				<div className="chat-room-container">
-				<div className="comment-body-container">
-				{
-					(postArray || []).map((val) => {
-					console.log("dispa:::::::::::::::::", val.message)
-						return (<div><div className="parent-post-container">
-						<div className="post-user-details"><div>{val.user.name}</div>&nbsp;&nbsp;<div>{val.time}</div></div>
-						{((val.postType) === "image") ? <img src={this.state.message}></img> :<div className="parent-post-msg">{val.message}</div>}
+					<div className="comment-body-container">
+						{
+							(postArray || []).map((val) => {
+								console.log("dispa:::::::::::::::::", val.message)
+								return (<div><div className="parent-post-container">
+									<div className="post-user-details"><div>{val.user.name}</div>&nbsp;&nbsp;<div>{val.time}</div></div>
+									{((val.postType) === "image") ? <img src={this.state.message}></img> : <div className="parent-post-msg">{val.message}</div>}
+								</div>
+									<div className="post-msg-replay">
+										Replay
 						</div>
-						<div className="post-msg-replay">
-						Replay
-						</div>
-						</div>)
-					})
-				}
-				</div>
+								</div>)
+							})
+						}
+					</div>
 					<div className="overall-chat-box">
 						<div><input type="text" placeholder="Comments" value={this.state.comment} onChange={(e) => this.onChangePost(e)} id="comment" name="OverallComment" />
 							<button type="button" onClick={() => this.onSubmitPost()} className="overall-post-btn">Post</button>
 							<span className="overall-upload-btn"><img className="post-upload-img" src="https://img.icons8.com/cute-clipart/2x/upload.png" width="42px;">
-							
+
 							</img>
-							{/* <FileBase64
-							multiple={ true }
-							onDone={(e) => this.getFiles(e) } /> */}
+							
 							</span>
 						</div>
 					</div>
@@ -282,7 +293,7 @@ export default class ChatContainer extends Component {
 					user={user}
 					activeChat={activeChat}
 					setActiveChat={this.setActiveChat}
-					onSendPrivateMessage={this.sendOpenPrivateMessage}
+					// onSendPrivateMessage={this.sendOpenPrivateMessage}
 				/>
 			</div>
 		);
